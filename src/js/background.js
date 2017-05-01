@@ -26,19 +26,21 @@ function isUrl(urlString) {
 }
 
 function openDistillerWithUrl(urlString) {
+  if (urlString.toLowerCase().startsWith('http://') ||
+      urlString.toLowerCase().startsWith('https://')) {
+    urlString = "http://"+urlString;
+  }
   try {
     var url = new URL(urlString);
   } catch (e) {
     alert("Url "+urlString + " is not an valid URL");
+    return;
   }
   
   var distillerBase = "chrome-distiller://6f8a02b6-79b7-4031-950f-97b2946e5ca7/?time=140534513&url="
-  if (urlString.toLowerCase().startsWith('http://') ||
-      urlString.toLowerCase().startsWith('https://')) {
-    chrome.tabs.create({ url: distillerBase+urlString, active:true});
-  } else {
-    chrome.tabs.create({ url: distillerBase+"http://"+urlString, active:true});
-  }
+
+  chrome.tabs.create({ url: distillerBase+urlString, active:true});
+
 }
 
 function parseQuery(qstr) {
